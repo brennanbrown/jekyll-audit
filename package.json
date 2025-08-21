@@ -13,6 +13,9 @@
   "bugs": {
     "url": "https://github.com/brennanbrown/jekyll-audit/issues"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "funding": [
     {
       "type": "github",
