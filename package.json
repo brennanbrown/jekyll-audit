@@ -1,0 +1,76 @@
+{
+  "name": "@brennanbrown/jekyll-audit",
+  "version": "0.1.0",
+  "description": "CLI to audit Jekyll sites for performance, accessibility, SEO, links, and HTML validation.",
+  "license": "MIT",
+  "type": "module",
+  "author": "Brennan Brown",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brennanbrown/jekyll-audit.git"
+  },
+  "homepage": "https://github.com/brennanbrown/jekyll-audit#readme",
+  "bugs": {
+    "url": "https://github.com/brennanbrown/jekyll-audit/issues"
+  },
+  "funding": [
+    { "type": "github", "url": "https://github.com/sponsors/brennanbrown" },
+    { "type": "opencollective", "url": "https://opencollective.com/enjoyment-work" },
+    { "type": "buymeacoffee", "url": "https://www.buymeacoffee.com/brennan" },
+    { "type": "ko-fi", "url": "https://ko-fi.com/brennan" }
+  ],
+  "bin": {
+    "jekyll-audit": "bin/jekyll-audit"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "prepare": "npm run build",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "node --enable-source-maps dist/cli.js --help"
+  },
+  "keywords": [
+    "jekyll",
+    "audit",
+    "lighthouse",
+    "accessibility",
+    "seo",
+    "links",
+    "html"
+  ],
+  "dependencies": {
+    "commander": "^12.1.0",
+    "get-port": "^7.0.0",
+    "linkinator": "^4.0.0",
+    "lighthouse": "^12.0.0",
+    "chrome-launcher": "^1.1.0",
+    "yaml": "^2.5.1",
+    "pa11y": "^6.2.3",
+    "serve-handler": "^6.1.5",
+    "zod": "^3.23.8",
+    "execa": "^9.3.0",
+    "html-validator": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "eslint": "^9.11.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.2"
+  }
+}
