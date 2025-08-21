@@ -68,12 +68,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
+      - name: Set up Ruby (only if Gemfile exists)
+        if: hashFiles('**/Gemfile') != ''
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
-      - name: Install Jekyll deps
-        run: bundle install --path vendor/bundle
+      - name: Install Jekyll deps (only if Gemfile exists)
+        if: hashFiles('**/Gemfile') != ''
+        run: |
+          bundle config set --local path 'vendor/bundle'
+          bundle install
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -93,3 +98,4 @@ jobs:
 ## Notes
 - You can bypass build/serve using `--baseUrl` to point at a dev server.
 - Thresholds control CI failure. Adjust per your needs in config.
+- The workflow only installs Ruby gems if a `Gemfile` is present, and uses `bundle config set --local path 'vendor/bundle'` instead of the deprecated `--path` flag.
