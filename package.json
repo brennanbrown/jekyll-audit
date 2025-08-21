@@ -1,6 +1,6 @@
 {
   "name": "@brennanbrown/jekyll-audit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI to audit Jekyll sites for performance, accessibility, SEO, links, and HTML validation.",
   "license": "MIT",
   "type": "module",
@@ -14,10 +14,22 @@
     "url": "https://github.com/brennanbrown/jekyll-audit/issues"
   },
   "funding": [
-    { "type": "github", "url": "https://github.com/sponsors/brennanbrown" },
-    { "type": "opencollective", "url": "https://opencollective.com/enjoyment-work" },
-    { "type": "buymeacoffee", "url": "https://www.buymeacoffee.com/brennan" },
-    { "type": "ko-fi", "url": "https://ko-fi.com/brennan" }
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/brennanbrown"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/enjoyment-work"
+    },
+    {
+      "type": "buymeacoffee",
+      "url": "https://www.buymeacoffee.com/brennan"
+    },
+    {
+      "type": "ko-fi",
+      "url": "https://ko-fi.com/brennan"
+    }
   ],
   "bin": {
     "jekyll-audit": "bin/jekyll-audit"
