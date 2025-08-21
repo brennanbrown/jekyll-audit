@@ -38,6 +38,8 @@
       @media (max-width: 640px) {
         /* Add a little negative margin so wide blocks align with page edges without causing horizontal bleed */
         .pre-wrap { margin-left: -1rem; margin-right: -1rem; padding-left: 1rem; padding-right: 1rem; }
+        /* Override for specific blocks that should NOT bleed */
+        .no-bleed.pre-wrap { margin-left: 0; margin-right: 0; }
       }
       .prose a { text-decoration: underline; }
     </style>
@@ -137,8 +139,8 @@
         <div class="mx-auto max-w-6xl px-6 py-12 grid md:grid-cols-2 gap-8 items-start">
           <div>
             <h3 class="text-2xl font-bold">Quick start</h3>
-            <p class="mt-3 text-slate-300">Requirements: Node &ge; 18, Ruby with Jekyll for builds.</p>
-            <pre class="mt-3 pre-wrap"><code># install and run (no install)
+            <p class="mt-3 text-slate-300">Requirements: Node ≥ 18, Ruby with Jekyll for builds.</p>
+            <pre class="mt-3 pre-wrap no-bleed"><code># install and run (no install)
 npx @brennanbrown/jekyll-audit audit
 
 # or install globally
