@@ -44,7 +44,11 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
 
   // Run Lighthouse audit (perf/seo/best-practices by default)
   const lhCategories = Object.keys(config.thresholds.lighthouse) as Array<'performance' | 'seo' | 'best-practices'>;
-  const lighthouseResult = await runLighthouseAudit({ url: baseUrl, categories: lhCategories });
+  const lighthouseResult = await runLighthouseAudit({
+    url: baseUrl,
+    categories: lhCategories,
+    includeScreenshots: Boolean(cliOptions.includeScreenshots),
+  });
 
   // Prepare reports directory
   const reportsOutDir = path.resolve(process.cwd(), config.reports.outDir);

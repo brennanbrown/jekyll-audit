@@ -14,6 +14,7 @@ program
   .option('--baseUrl <url>', 'Base URL to audit (overrides serve step)')
   .option('--report <formats>', 'Comma-separated report formats: json,html,md', 'json')
   .option('--outDir <dir>', 'Output directory for reports', 'reports')
+  .option('--includeScreenshots', 'Include Lighthouse screenshot audits in JSON output (opt-in)', false)
   .option('--skipBuild', 'Skip Jekyll build step')
   .option('--skipServe', 'Skip serving step');
 
