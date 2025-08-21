@@ -45,14 +45,16 @@
         .pre-wrap { margin-left: 0; margin-right: 0; padding-left: 1rem; padding-right: 1rem; }
       }
       .prose a { text-decoration: underline; }
+      /* Utility to prevent long text overflow */
+      .break-anywhere { overflow-wrap: anywhere; word-break: break-word; min-width: 0; }
     </style>
   </head>
   <body class="gradient-bg min-h-screen text-slate-100">
     <header class="relative">
       <div class="mx-auto max-w-6xl px-6 py-8 flex items-center justify-between">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 break-anywhere min-w-0">
           <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-400/20 text-sky-300 text-xl">🛠️</span>
-          <div>
+          <div class="break-anywhere min-w-0">
             <h1 class="text-2xl font-extrabold tracking-tight">jekyll-audit</h1>
             <p class="text-sm text-slate-300">Audit Jekyll sites for Perf · A11y · SEO · Links · HTML</p>
           </div>
@@ -73,7 +75,7 @@
       <section class="relative">
         <div class="mx-auto max-w-6xl px-6 pb-12 pt-6">
           <div class="grid md:grid-cols-2 gap-8 items-center">
-            <div>
+            <div class="break-anywhere min-w-0">
               <h2 class="text-4xl md:text-5xl font-extrabold leading-tight">
                 Ship fast with confidence <span class="text-sky-300">✨</span>
               </h2>
