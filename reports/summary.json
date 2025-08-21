@@ -1,0 +1,31 @@
+{
+  "baseUrl": "http://127.0.0.1:58551",
+  "lighthouse": {
+    "performance": {
+      "score": 0.72,
+      "threshold": 0.8
+    },
+    "best-practices": {
+      "score": 0.96,
+      "threshold": 0.9
+    },
+    "seo": {
+      "score": 1,
+      "threshold": 0.9
+    }
+  },
+  "accessibility": {
+    "totalIssues": 333,
+    "threshold": 0
+  },
+  "links": {
+    "broken": 42,
+    "threshold": 0
+  },
+  "html": {
+    "totalErrors": 464,
+    "threshold": 0
+  },
+  "passed": false,
+  "timestamp": "2025-08-21T12:52:59.587Z"
+}

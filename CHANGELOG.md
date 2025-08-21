@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
+## [0.3.1] - 2025-08-21
+### Fixed
+- Ensure local HTTP server is closed after audits to prevent process hanging (`src/orchestrator/index.ts`).
+
+### Added
+- Generate human-readable `reports/summary.md` with concise explanations of scores and error counts.
+
 ## [0.3.0] - 2025-08-21
 ### Added
 - Default lean "summary" outputs for Pa11y, Linkinator, and HTML validator in `src/orchestrator/index.ts`.

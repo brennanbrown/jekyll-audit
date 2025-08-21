@@ -29,20 +29,24 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
   }
 
   let baseUrl: string;
+  let closeServer: null | (() => Promise<void>) = null;
 
   if (cliOptions.baseUrl) {
     baseUrl = cliOptions.baseUrl;
   } else if (shouldServe) {
     const baseurl = await detectJekyllBaseUrl(config.jekyll.sourceDir);
     const served = await serveBuild(buildDir, config.server.port, config.server.host);
-    baseUrl = baseurl ? served.replace(/\/$/, '') + ensureLeadingSlash(baseurl) : served;
+    closeServer = served.close;
+    baseUrl = baseurl ? served.url.replace(/\/$/, '') + ensureLeadingSlash(baseurl) : served.url;
   } else {
     // Fallback to serving if no baseUrl and build skipped
     const baseurl = await detectJekyllBaseUrl(config.jekyll.sourceDir);
     const served = await serveBuild(buildDir, config.server.port, config.server.host);
-    baseUrl = baseurl ? served.replace(/\/$/, '') + ensureLeadingSlash(baseurl) : served;
+    closeServer = served.close;
+    baseUrl = baseurl ? served.url.replace(/\/$/, '') + ensureLeadingSlash(baseurl) : served.url;
   }
 
+  try {
   // Run Lighthouse audit (perf/seo/best-practices by default)
   const lhCategories = Object.keys(config.thresholds.lighthouse) as Array<'performance' | 'seo' | 'best-practices'>;
   const lighthouseResult = await runLighthouseAudit({
@@ -283,10 +287,57 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
   };
   await fs.writeFile(path.join(reportsOutDir, 'summary.json'), JSON.stringify(summary, null, 2), 'utf8');
 
+  // Also write a concise human-readable markdown summary for quick review in CI
+  try {
+    const mdLines: string[] = [];
+    mdLines.push(`# Jekyll Audit Summary`);
+    mdLines.push('');
+    mdLines.push(`- Base URL: ${baseUrl}`);
+    mdLines.push(`- Timestamp: ${summary.timestamp}`);
+    mdLines.push(`- Result: ${summary.passed ? 'PASS' : 'FAIL'}`);
+    mdLines.push('');
+    mdLines.push(`## Lighthouse`);
+    mdLines.push('Category scores (0–1, higher is better). Thresholds shown in parentheses.');
+    for (const [key, val] of Object.entries(lhSummary)) {
+      const thr = typeof val.threshold === 'number' ? ` (threshold ${val.threshold})` : '';
+      mdLines.push(`- ${key}: ${val.score ?? 'n/a'}${thr}`);
+    }
+    mdLines.push('Common guidance: Performance < 0.9 often indicates unoptimized images, render-blocking resources, or long main-thread tasks.');
+    mdLines.push('');
+    mdLines.push(`## Accessibility (Pa11y)`);
+    mdLines.push(`- Total issues: ${totalIssues} (threshold ${config.thresholds.accessibility.maxIssues})`);
+    mdLines.push('Issues include errors (failures), warnings, and notices. Prioritize errors first.');
+    mdLines.push('');
+    mdLines.push(`## Links (Linkinator)`);
+    mdLines.push(`- Broken links: ${linkRes.brokenCount} (threshold ${config.thresholds.links.maxBroken})`);
+    mdLines.push('Fix 404s, redirects, and malformed hrefs. Prefer internal-only checks for faster CI when needed.');
+    mdLines.push('');
+    mdLines.push(`## HTML Validation`);
+    mdLines.push(`- Total HTML errors: ${totalHtmlErrors} (threshold ${config.thresholds.html.maxErrors})`);
+    mdLines.push('HTML errors can affect rendering and SEO. Address invalid markup and required attributes.');
+    mdLines.push('');
+    mdLines.push(`## Notes`);
+    mdLines.push('- Reports are lean by default. Use flags to increase detail:');
+    mdLines.push('  - Lighthouse: `--output full --includeDetails [--includeScreenshots]`');
+    mdLines.push('  - Pa11y: `--a11yOutput full --a11yIncludeDetails`');
+    mdLines.push('  - Links: `--linksOutput full --linksIncludeDetails`');
+    mdLines.push('  - HTML: `--htmlOutput full --htmlIncludeDetails`');
+    mdLines.push('');
+    await fs.writeFile(path.join(reportsOutDir, 'summary.md'), mdLines.join('\n'), 'utf8');
+  } catch {
+    // non-critical
+  }
+
   if (anyFailures && !Boolean(cliOptions.softFail)) {
     // eslint-disable-next-line no-console
     console.error('\nOne or more thresholds failed.');
     process.exitCode = 1;
+  }
+  } finally {
+    // Ensure the HTTP server is closed to avoid hanging the process
+    if (closeServer) {
+      try { await closeServer(); } catch { /* ignore */ }
+    }
   }
 }
 
@@ -297,7 +348,7 @@ async function runJekyllBuild(buildCommand: string) {
   await execa(cmd, args, { stdio: 'inherit', env: { ...process.env, JEKYLL_ENV: 'production' } });
 }
 
-async function serveBuild(buildDir: string, preferredPort?: number, host = '127.0.0.1'): Promise<string> {
+async function serveBuild(buildDir: string, preferredPort?: number, host = '127.0.0.1'): Promise<{ url: string; close: () => Promise<void> }> {
   const port = preferredPort ?? (await getPort());
 
   await fs.access(buildDir);
@@ -311,7 +362,13 @@ async function serveBuild(buildDir: string, preferredPort?: number, host = '127.
   // eslint-disable-next-line no-console
   console.log(`Serving ${buildDir} at http://${host}:${port}`);
 
-  return `http://${host}:${port}`;
+  return {
+    url: `http://${host}:${port}`,
+    close: () =>
+      new Promise<void>((resolve, reject) => {
+        server.close((err) => (err ? reject(err) : resolve()));
+      }),
+  };
 }
 
 async function detectJekyllBaseUrl(sourceDir: string): Promise<string | null> {

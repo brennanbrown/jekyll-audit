@@ -1,0 +1,215 @@
+{
+  "brokenCount": 42,
+  "broken": [
+    {
+      "url": "http://127.0.0.1:58551/assets/css/style.css",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/"
+    },
+    {
+      "url": "http://127.0.0.1:58551/assets/css/LICENSE",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/assets/css/style.css"
+    },
+    {
+      "url": "http://127.0.0.1:58551/[",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/"
+    },
+    {
+      "url": "http://127.0.0.1:58551/posts/LICENSE",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/posts/Introduction-to-enjoyment-work"
+    },
+    {
+      "url": "http://127.0.0.1:58551/home",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/"
+    },
+    {
+      "url": "http://127.0.0.1:58551/feeds",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/"
+    },
+    {
+      "url": "http://127.0.0.1:58551/notes/LICENSE",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/notes/comparison-based-accomplishment"
+    },
+    {
+      "url": "http://127.0.0.1:58551/notes/%3Ca%20href=",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/notes/comparison-based-accomplishment"
+    },
+    {
+      "url": "http://127.0.0.1:58551/journals/LICENSE",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/journals/October-6th-2020"
+    },
+    {
+      "url": "http://127.0.0.1:58551/blob/master/LICENSE",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/posts/Test-page-to-see-how-the-markdown-is-rendered"
+    },
+    {
+      "url": "http://127.0.0.1:58551/dates/LICENSE",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/dates/"
+    },
+    {
+      "url": "https://github.com/raghuveerdotnet",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/"
+    },
+    {
+      "url": "https://www.mooc-list.com/",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/posts/a-comprehensive-guide-to-self-learning"
+    },
+    {
+      "url": "https://ko-fi.com/brennanbrown",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/"
+    },
+    {
+      "url": "https://brennanbrown.ca/img/avatar.jpg",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/"
+    },
+    {
+      "url": "https://enjoyment-work.netlify.app//archives/",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/"
+    },
+    {
+      "url": "https://wandernotebook.com/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/about"
+    },
+    {
+      "url": "https://raghuveer.net/posts/branching-effects-of-higher-order-thinking/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/posts/informational-hazard-thinking-before-consuming"
+    },
+    {
+      "url": "https://www.freepik.com/index.php?goto=74&idfoto=1256497",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/posts/creating-a-contingency-plan"
+    },
+    {
+      "url": "https://www.pexels.com/photo/ceramic-artisan-clay-mud-110144/",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/posts/the-duality-of-purpose-and-work"
+    },
+    {
+      "url": "http://127.0.0.1:58551/tags/LICENSE",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/tags/"
+    },
+    {
+      "url": "https://beemind.me/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/journals/October-6th-2020"
+    },
+    {
+      "url": "https://localhost:4000/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/posts/How-to-setup-enjoyment-work"
+    },
+    {
+      "url": "https://www.raghuveer.net/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/posts/How-to-setup-enjoyment-work"
+    },
+    {
+      "url": "https://journal.bar/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/posts/six-ways-to-achieve-new-things"
+    },
+    {
+      "url": "https://betterhumans.coach.me/better-than-meditation-12532d29f6cd",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/posts/creating-a-contingency-plan"
+    },
+    {
+      "url": "https://alternativeto.net/",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/posts/six-ways-to-achieve-new-things"
+    },
+    {
+      "url": "https://familydoctor.org/hydration-why-its-so-important/",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/posts/my-writing-process"
+    },
+    {
+      "url": "https://www.pexels.com/photo/antique-blank-camera-classic-269810/",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/posts/my-writing-process"
+    },
+    {
+      "url": "https://www.success.com/article/how-to-write-your-personal-mission-statement",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/posts/disrupting-the-attention-based-economy"
+    },
+    {
+      "url": "https://selfteach.academy/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/journals/October-20th-2020"
+    },
+    {
+      "url": "https://www.nytimes.com/2011/08/21/magazine/do-you-suffer-from-decision-fatigue.html?pagewanted=all",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/notes/serendipity-outlook"
+    },
+    {
+      "url": "https://m.facebook.com/nntaleb/posts/10152466038423375",
+      "status": 400,
+      "parent": "http://127.0.0.1:58551/notes/serendipity-outlook"
+    },
+    {
+      "url": "https://www.beeminder.com/brennanbrown/meditation",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/journals/October-13th-2020"
+    },
+    {
+      "url": "https://beeminder.com/brennanbrown/distraction",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/journals/October-6th-2020"
+    },
+    {
+      "url": "https://blog.evernote.com/blog/2017/02/23/deep-work-matters-distracted-world/",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/posts/my-writing-process"
+    },
+    {
+      "url": "https://beeminder.com/brennanbrown/mornning-pages2",
+      "status": 403,
+      "parent": "http://127.0.0.1:58551/journals/October-20th-2020"
+    },
+    {
+      "url": "https://www.nathanarthur.com/beeminder-wiki/",
+      "status": 404,
+      "parent": "http://127.0.0.1:58551/journals/October-13th-2020"
+    },
+    {
+      "url": "https://linkedin.com/in/brennankbrown/",
+      "status": 999,
+      "parent": "http://127.0.0.1:58551/about"
+    },
+    {
+      "url": "http://example.com/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/posts/markdown-syntax-preview"
+    },
+    {
+      "url": "https://www.unixreich.com/blog/2013/linux-nvidia-optimus-on-thinkpad-w520w530-with-external-monitor-finally-solved/",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/journals/October-13th-2020"
+    },
+    {
+      "url": "https://www.keyhero.com/profile/brennanbrown",
+      "status": 0,
+      "parent": "http://127.0.0.1:58551/journals/October-6th-2020"
+    }
+  ]
+}

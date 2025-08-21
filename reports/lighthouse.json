@@ -1,0 +1,50 @@
+{
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.0.0 Safari/537.36",
+  "fetchTime": "2025-08-21T12:49:43.960Z",
+  "requestedUrl": "http://127.0.0.1:58551/",
+  "finalUrl": "http://127.0.0.1:58551/",
+  "lighthouseVersion": "12.8.1",
+  "categories": {
+    "performance": {
+      "score": 0.72
+    },
+    "best-practices": {
+      "score": 0.96
+    },
+    "seo": {
+      "score": 1
+    }
+  },
+  "metrics": {
+    "first-contentful-paint": {
+      "score": 0.92,
+      "numericValue": 1706.726,
+      "displayValue": "1.7 s"
+    },
+    "largest-contentful-paint": {
+      "score": 0.31,
+      "numericValue": 4759.085800000001,
+      "displayValue": "4.8 s"
+    },
+    "speed-index": {
+      "score": 0.98,
+      "numericValue": 2412.021724001581,
+      "displayValue": "2.4 s"
+    },
+    "total-blocking-time": {
+      "score": 0.94,
+      "numericValue": 150,
+      "displayValue": "150 ms"
+    },
+    "cumulative-layout-shift": {
+      "score": 0.67,
+      "numericValue": 0.18201386369066289,
+      "displayValue": "0.182"
+    },
+    "interactive": {
+      "score": 0.69,
+      "numericValue": 5659.831,
+      "displayValue": "5.7 s"
+    }
+  }
+}
