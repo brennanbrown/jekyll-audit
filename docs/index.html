@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>jekyll-audit · Audit Jekyll sites for perf, a11y, SEO, links, and HTML</title>
+    <meta name="description" content="jekyll-audit is a CLI that builds and audits Jekyll static sites using Lighthouse, Pa11y, Linkinator, and HTML validator. CI-friendly with thresholds and JSON reports." />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
+    <meta name="theme-color" content="#0b1222" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="jekyll-audit · Audit Jekyll sites for Perf, A11y, SEO, Links, HTML" />
+    <meta property="og:description" content="Build and audit your Jekyll site with Lighthouse, Pa11y, Linkinator, and an HTML validator. JSON reports, thresholds, and CI-friendly." />
+    <meta property="og:url" content="https://brennanbrown.github.io/jekyll-audit/" />
+    <meta property="og:image" content="https://brennanbrown.github.io/jekyll-audit/docs/favicon.svg" />
+    <meta property="og:site_name" content="jekyll-audit" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="jekyll-audit · Audit Jekyll sites for Perf, A11y, SEO, Links, HTML" />
+    <meta name="twitter:description" content="CLI for auditing Jekyll sites with JSON reports and CI thresholds." />
+    <meta name="twitter:image" content="https://brennanbrown.github.io/jekyll-audit/docs/favicon.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+      html, body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+      .gradient-bg { background: radial-gradient(1200px 600px at 90% -10%, #60a5fa33, transparent), radial-gradient(800px 400px at -10% 10%, #34d39933, transparent), linear-gradient(180deg,#0f172a,#0b1222 30%, #0b1020); }
+      .card { backdrop-filter: blur(8px); }
+      code { background: #0b1222; color: #d1d5db; padding: 0.15rem 0.35rem; border-radius: 0.25rem; }
+      pre { background: #0b1222; color: #e5e7eb; border-radius: 0.5rem; padding: 1rem; overflow: auto; }
+      .prose a { text-decoration: underline; }
+    </style>
+  </head>
+  <body class="gradient-bg min-h-screen text-slate-100">
+    <header class="relative">
+      <div class="mx-auto max-w-6xl px-6 py-8 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-400/20 text-sky-300 text-xl">🛠️</span>
+          <div>
+            <h1 class="text-2xl font-extrabold tracking-tight">jekyll-audit</h1>
+            <p class="text-sm text-slate-300">Audit Jekyll sites for Perf · A11y · SEO · Links · HTML</p>
+          </div>
+        </div>
+        <nav class="hidden md:flex items-center gap-4 text-slate-200">
+          <a class="hover:text-white" href="#features">Features</a>
+          <a class="hover:text-white" href="#usage">Usage</a>
+          <a class="hover:text-white" href="#config">Config</a>
+          <a class="hover:text-white" href="#ci">CI</a>
+          <a class="hover:text-white" href="#support">Support</a>
+          <a class="hover:text-white" href="#themes">Themes</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="relative">
+        <div class="mx-auto max-w-6xl px-6 pb-12 pt-6">
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 class="text-4xl md:text-5xl font-extrabold leading-tight">
+                Ship fast with confidence <span class="text-sky-300">✨</span>
+              </h2>
+              <p class="mt-4 text-slate-300 text-lg">
+                Build and audit your Jekyll site using Lighthouse, Pa11y, Linkinator, and HTML Validator.
+                Get JSON reports, threshold-based CI failures, and a simple CLI that just works.
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a href="https://www.npmjs.com/package/@brennanbrown/jekyll-audit" class="px-4 py-2 rounded-lg bg-sky-500 text-white hover:bg-sky-400 transition">View on npm</a>
+                <a href="https://github.com/brennanbrown/jekyll-audit" class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">GitHub</a>
+              </div>
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <a href="https://www.npmjs.com/package/@brennanbrown/jekyll-audit" target="_blank" rel="noopener">
+                  <img alt="npm version" src="https://img.shields.io/npm/v/%40brennanbrown%2Fjekyll-audit?color=%2338bdf8&label=npm%20version" />
+                </a>
+                <a href="https://www.npmjs.com/package/@brennanbrown/jekyll-audit" target="_blank" rel="noopener">
+                  <img alt="npm downloads per month" src="https://img.shields.io/npm/dm/%40brennanbrown%2Fjekyll-audit?color=%2334d399&label=downloads" />
+                </a>
+                <a href="https://github.com/brennanbrown/jekyll-audit/blob/main/LICENSE" target="_blank" rel="noopener">
+                  <img alt="license" src="https://img.shields.io/npm/l/%40brennanbrown%2Fjekyll-audit?color=%238b5cf6" />
+                </a>
+              </div>
+              <div class="mt-6">
+                <pre><code>npx @brennanbrown/jekyll-audit audit</code></pre>
+              </div>
+            </div>
+            <div class="md:justify-self-end w-full">
+              <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+                <h3 class="font-semibold text-slate-200 mb-3">What you get</h3>
+                <ul class="space-y-2 text-sm text-slate-300 list-disc pl-5">
+                  <li>Lighthouse perf/SEO/best-practices</li>
+                  <li>Pa11y accessibility scan</li>
+                  <li>Linkinator broken links</li>
+                  <li>HTML validation errors</li>
+                  <li>Aggregated summary + CI exit codes</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section id="features" class="relative">
+        <div class="mx-auto max-w-6xl px-6 py-12 grid md:grid-cols-3 gap-6">
+          <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+            <div class="text-3xl">⚡</div>
+            <h3 class="mt-2 font-semibold text-lg">Build + Serve</h3>
+            <p class="mt-2 text-slate-300 text-sm">Runs <code>bundle exec jekyll build</code> with <code>JEKYLL_ENV=production</code>, serves <code>_site/</code>, and respects <code>baseurl</code> from <code>_config.yml</code>.</p>
+          </div>
+          <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+            <div class="text-3xl">🧭</div>
+            <h3 class="mt-2 font-semibold text-lg">Smart Targets</h3>
+            <p class="mt-2 text-slate-300 text-sm">Discovers URLs from <code>sitemap.xml</code> or falls back to configured paths. Limits pages via <code>maxPages</code>.</p>
+          </div>
+          <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+            <div class="text-3xl">📊</div>
+            <h3 class="mt-2 font-semibold text-lg">Reports + CI</h3>
+            <p class="mt-2 text-slate-300 text-sm">Writes JSON reports and <code>summary.json</code>. Fails the build when thresholds are exceeded.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Usage -->
+      <section id="usage" class="relative">
+        <div class="mx-auto max-w-6xl px-6 py-12 grid md:grid-cols-2 gap-8 items-start">
+          <div>
+            <h3 class="text-2xl font-bold">Quick start</h3>
+            <p class="mt-3 text-slate-300">Requirements: Node &ge; 18, Ruby with Jekyll for builds.</p>
+            <pre class="mt-3"><code># install and run (no install)
+npx @brennanbrown/jekyll-audit audit
+
+# or install globally
+npm i -g @brennanbrown/jekyll-audit
+jekyll-audit audit
+
+# target a running dev server
+jekyll-audit --baseUrl http://127.0.0.1:4000 audit</code></pre>
+          </div>
+          <div class="prose prose-invert max-w-none">
+            <h3 class="text-2xl font-bold">Config (optional)</h3>
+            <p>Create <code>jekyll-audit.config.js</code> in your repo:</p>
+            <pre><code>/** @type {import('./dist/config/schema.js').AuditConfig} */
+export default {
+  jekyll: { buildDir: '_site', buildCommand: 'bundle exec jekyll build' },
+  crawl: { useSitemap: true, maxPages: 50, paths: ['/'] },
+  thresholds: {
+    lighthouse: { performance: 0.8, seo: 0.9, 'best-practices': 0.9 },
+    accessibility: { maxIssues: 0 },
+    links: { maxBroken: 0 },
+    html: { maxErrors: 0 },
+  },
+  reports: { formats: ['json'], outDir: 'reports' },
+};</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- CI -->
+      <section id="ci" class="relative">
+        <div class="mx-auto max-w-6xl px-6 py-12">
+          <h3 class="text-2xl font-bold">GitHub Actions</h3>
+          <p class="mt-2 text-slate-300">Add <code>.github/workflows/jekyll-audit.yml</code>:</p>
+          <pre class="mt-3"><code>name: Jekyll Audit
+on: [push, pull_request]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+      - name: Install Jekyll deps
+        run: bundle install --path vendor/bundle
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - name: Run jekyll-audit
+        run: node bin/jekyll-audit audit
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jekyll-audit-reports
+          path: reports/</code></pre>
+        </div>
+      </section>
+
+      <!-- Support -->
+      <section id="support" class="relative">
+        <div class="mx-auto max-w-6xl px-6 py-12">
+          <h3 class="text-2xl font-bold">Support the project 💖</h3>
+          <p class="mt-2 text-slate-300">If this tool helps your Jekyll workflows, consider sponsoring:</p>
+          <div class="mt-4 grid sm:grid-cols-2 md:grid-cols-4 gap-3">
+            <a class="card rounded-xl bg-white/5 border border-white/10 p-4 hover:bg-white/10 transition" href="https://github.com/sponsors/brennanbrown" target="_blank" rel="noopener">GitHub Sponsors</a>
+            <a class="card rounded-xl bg-white/5 border border-white/10 p-4 hover:bg-white/10 transition" href="https://opencollective.com/enjoyment-work" target="_blank" rel="noopener">OpenCollective</a>
+            <a class="card rounded-xl bg-white/5 border border-white/10 p-4 hover:bg-white/10 transition" href="https://www.buymeacoffee.com/brennan" target="_blank" rel="noopener">BuyMeACoffee</a>
+            <a class="card rounded-xl bg-white/5 border border-white/10 p-4 hover:bg-white/10 transition" href="https://ko-fi.com/brennan" target="_blank" rel="noopener">Ko‑fi</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Themes -->
+      <section id="themes" class="relative">
+        <div class="mx-auto max-w-6xl px-6 py-12">
+          <h3 class="text-2xl font-bold">More from Brennan 🌲</h3>
+          <div class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="card rounded-xl bg-white/5 border border-white/10 p-4">
+              <div class="font-semibold">Enjoyment Work (Jekyll)</div>
+              <div class="mt-2 flex gap-2">
+                <a class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 text-sm" href="https://github.com/brennanbrown/enjoyment-work" target="_blank" rel="noopener">Repo</a>
+                <a class="px-3 py-1 rounded-md bg-sky-600 hover:bg-sky-500 text-sm" href="https://enjoyment-work.netlify.app" target="_blank" rel="noopener">Live</a>
+              </div>
+            </div>
+            <div class="card rounded-xl bg-white/5 border border-white/10 p-4">
+              <div class="font-semibold">Campfire (Hugo)</div>
+              <div class="mt-2 flex gap-2">
+                <a class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 text-sm" href="https://github.com/brennanbrown/Campfire-Hugo-Theme" target="_blank" rel="noopener">Repo</a>
+                <a class="px-3 py-1 rounded-md bg-sky-600 hover:bg-sky-500 text-sm" href="https://campfire-hugo.netlify.app/" target="_blank" rel="noopener">Live</a>
+              </div>
+            </div>
+            <div class="card rounded-xl bg-white/5 border border-white/10 p-4">
+              <div class="font-semibold">Indie Web Blog Starter (11ty)</div>
+              <div class="mt-2 flex gap-2">
+                <a class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 text-sm" href="https://github.com/brennanbrown/11ty-Indie-Web-Blog-Starter" target="_blank" rel="noopener">Repo</a>
+                <a class="px-3 py-1 rounded-md bg-sky-600 hover:bg-sky-500 text-sm" href="https://indieweb-blog-starter.netlify.app" target="_blank" rel="noopener">Live</a>
+              </div>
+            </div>
+            <div class="card rounded-xl bg-white/5 border border-white/10 p-4">
+              <div class="font-semibold">Watery (Jekyll)</div>
+              <div class="mt-2 flex gap-2">
+                <a class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 text-sm" href="https://github.com/brennanbrown/watery" target="_blank" rel="noopener">Repo</a>
+                <a class="px-3 py-1 rounded-md bg-sky-600 hover:bg-sky-500 text-sm" href="https://watery.netlify.app" target="_blank" rel="noopener">Live</a>
+              </div>
+            </div>
+            <div class="card rounded-xl bg-white/5 border border-white/10 p-4">
+              <div class="font-semibold">Purelog (Jekyll)</div>
+              <div class="mt-2 flex gap-2">
+                <a class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 text-sm" href="https://github.com/brennanbrown/purelog" target="_blank" rel="noopener">Repo</a>
+                <a class="px-3 py-1 rounded-md bg-sky-600 hover:bg-sky-500 text-sm" href="https://purelog.netlify.app" target="_blank" rel="noopener">Live</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-white/10">
+      <div class="mx-auto max-w-6xl px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-slate-400">© <span id="year"></span> Brennan Brown. All rights reserved.</p>
+        <div class="text-slate-400 text-sm">Built with <span class="text-pink-300">♥</span> · <a class="underline" href="https://github.com/brennanbrown/jekyll-audit" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
