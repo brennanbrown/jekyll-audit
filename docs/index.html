@@ -24,6 +24,8 @@
     <meta name="twitter:description" content="CLI for auditing Jekyll sites with JSON reports and CI thresholds." />
     <meta name="twitter:image" content="https://brennanbrown.github.io/jekyll-audit/docs/favicon.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-5m1L7mQ6q7mVfQ/0k7V3nS5z3P0b6lV2+K+Zgfrs9n8wV28iPYnq9j1Q8KZkPqz3gZf4VdXkQv0n6uGlm0oP7g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -36,10 +38,8 @@
       pre { background: #0b1222; color: #e5e7eb; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; overflow-y: hidden; max-width: 100%; box-sizing: border-box; }
       pre code { white-space: pre; word-break: normal; }
       @media (max-width: 640px) {
-        /* Add a little negative margin so wide blocks align with page edges without causing horizontal bleed */
-        .pre-wrap { margin-left: -1rem; margin-right: -1rem; padding-left: 1rem; padding-right: 1rem; }
-        /* Override for specific blocks that should NOT bleed */
-        .no-bleed.pre-wrap { margin-left: 0; margin-right: 0; }
+        /* Prevent bleed entirely on small screens; use native horizontal scroll */
+        .pre-wrap { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
       }
       .prose a { text-decoration: underline; }
     </style>
@@ -94,7 +94,7 @@
                 </a>
               </div>
               <div class="mt-6">
-                <pre class="pre-wrap"><code>npx @brennanbrown/jekyll-audit audit</code></pre>
+                <pre class="pre-wrap"><code class="language-bash">npx @brennanbrown/jekyll-audit audit</code></pre>
               </div>
             </div>
             <div class="md:justify-self-end w-full">
@@ -140,7 +140,7 @@
           <div>
             <h3 class="text-2xl font-bold">Quick start</h3>
             <p class="mt-3 text-slate-300">Requirements: Node ≥ 18, Ruby with Jekyll for builds.</p>
-            <pre class="mt-3 pre-wrap no-bleed"><code># install and run (no install)
+            <pre class="mt-3 pre-wrap"><code class="language-bash"># install and run (no install)
 npx @brennanbrown/jekyll-audit audit
 
 # or install globally
@@ -153,7 +153,7 @@ jekyll-audit --baseUrl http://127.0.0.1:4000 audit</code></pre>
           <div class="prose prose-invert max-w-none">
             <h3 class="text-2xl font-bold">Config (optional)</h3>
             <p>Create <code>jekyll-audit.config.js</code> in your repo:</p>
-            <pre class="pre-wrap"><code>/** @type {import('./dist/config/schema.js').AuditConfig} */
+            <pre class="pre-wrap"><code class="language-js">/** @type {import('./dist/config/schema.js').AuditConfig} */
 export default {
   jekyll: { buildDir: '_site', buildCommand: 'bundle exec jekyll build' },
   crawl: { useSitemap: true, maxPages: 50, paths: ['/'] },
@@ -174,7 +174,7 @@ export default {
         <div class="mx-auto max-w-6xl px-6 py-12">
           <h3 class="text-2xl font-bold">GitHub Actions</h3>
           <p class="mt-2 text-slate-300">Add <code>.github/workflows/jekyll-audit.yml</code>:</p>
-          <pre class="mt-3 pre-wrap"><code>name: Jekyll Audit
+          <pre class="mt-3 pre-wrap"><code class="language-yaml">name: Jekyll Audit
 on: [push, pull_request]
 jobs:
   audit:
@@ -270,7 +270,9 @@ jobs:
       </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-1m9mF0M8Fq8VJ9oI7k7r2jz0fG0nP6EoD+QhH3M1C0t4hkv7x8nZs0rQ2cO9IYwHkQ8nqg5Jx+2sY8y1nJ4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+      if (window.hljs) { window.hljs.highlightAll(); }
       document.getElementById('year').textContent = new Date().getFullYear();
     </script>
   </body>
