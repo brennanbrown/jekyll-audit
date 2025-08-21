@@ -5,6 +5,7 @@ import getPort from 'get-port';
 import http from 'node:http';
 import serveHandler from 'serve-handler';
 import { runLighthouseAudit } from '../audits/lighthouse.js';
+import zlib from 'node:zlib';
 import YAML from 'yaml';
 import { runPa11yOnUrl } from '../audits/pa11y.js';
 import { discoverSitemap, parseSitemapLocs, urlsFromPaths } from '../utils/sitemap.js';
@@ -48,14 +49,82 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
     url: baseUrl,
     categories: lhCategories,
     includeScreenshots: Boolean(cliOptions.includeScreenshots),
+    skipHeavyAudits: String(cliOptions.output || 'summary') === 'summary',
   });
 
   // Prepare reports directory
   const reportsOutDir = path.resolve(process.cwd(), config.reports.outDir);
   await fs.mkdir(reportsOutDir, { recursive: true });
 
-  // Write raw Lighthouse report JSON for full detail
-  await fs.writeFile(path.join(reportsOutDir, 'lighthouse.json'), lighthouseResult.rawReport, 'utf8');
+  // Determine output mode and write Lighthouse report accordingly
+  const outputMode = String(cliOptions.output || 'summary');
+  const includeDetails = Boolean(cliOptions.includeDetails);
+  const useGzip = Boolean(cliOptions.gzip) && outputMode === 'full';
+
+  let lighthouseOut = lighthouseResult.rawReport;
+  if (outputMode === 'summary') {
+    try {
+      const obj = JSON.parse(lighthouseResult.rawReport);
+      const metricsIds = [
+        'first-contentful-paint',
+        'largest-contentful-paint',
+        'speed-index',
+        'total-blocking-time',
+        'cumulative-layout-shift',
+        'interactive',
+      ];
+      const metrics: Record<string, any> = {};
+      if (obj && obj.audits) {
+        for (const id of metricsIds) {
+          const a = obj.audits[id];
+          if (a) {
+            metrics[id] = {
+              score: a.score ?? null,
+              numericValue: a.numericValue ?? null,
+              displayValue: a.displayValue ?? undefined,
+            };
+          }
+        }
+      }
+      const summaryLh = {
+        userAgent: obj?.userAgent,
+        fetchTime: obj?.fetchTime,
+        requestedUrl: obj?.requestedUrl,
+        finalUrl: obj?.finalUrl,
+        lighthouseVersion: obj?.lighthouseVersion,
+        categories: lighthouseResult.categories,
+        metrics,
+      };
+      lighthouseOut = JSON.stringify(summaryLh, null, 2);
+    } catch {
+      // fallback: keep original if parsing fails
+    }
+  } else if (outputMode === 'full' && !includeDetails) {
+    // Strip audit details to reduce size if requested
+    try {
+      const obj = JSON.parse(lighthouseResult.rawReport);
+      if (obj && obj.audits) {
+        for (const a of Object.values(obj.audits) as any[]) {
+          if (a && 'details' in a) delete (a as any).details;
+        }
+      }
+      // Drop other heavy top-level fields commonly not needed in CI comparisons
+      delete obj.i18n;
+      delete obj.timing;
+      delete obj.stackPacks;
+      lighthouseOut = JSON.stringify(obj);
+    } catch {
+      // ignore
+    }
+  }
+
+  const lighthousePath = path.join(reportsOutDir, useGzip ? 'lighthouse.json.gz' : 'lighthouse.json');
+  if (useGzip) {
+    const gz = zlib.gzipSync(Buffer.from(lighthouseOut, 'utf8'));
+    await fs.writeFile(lighthousePath, gz);
+  } else {
+    await fs.writeFile(lighthousePath, lighthouseOut, 'utf8');
+  }
 
   // Console summary
   // eslint-disable-next-line no-console
@@ -85,11 +154,20 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
   // Accessibility audit via Pa11y
   const sitemap = await discoverSitemap(buildDir, baseUrl);
   let targets: string[];
-  if (sitemap?.pathOnDisk && config.crawl.useSitemap) {
+  const maxPagesOverride = typeof cliOptions.maxPages === 'number' && !Number.isNaN(cliOptions.maxPages)
+    ? (cliOptions.maxPages as number)
+    : config.crawl.maxPages;
+  const pathsOverride = typeof cliOptions.paths === 'string' && (cliOptions.paths as string).trim().length > 0
+    ? String(cliOptions.paths).split(',').map((p) => p.trim()).filter(Boolean)
+    : null;
+  const useSitemap = !cliOptions.noSitemap && config.crawl.useSitemap && !pathsOverride;
+  if (pathsOverride) {
+    targets = urlsFromPaths(baseUrl, pathsOverride).slice(0, maxPagesOverride);
+  } else if (sitemap?.pathOnDisk && useSitemap) {
     const urls = await parseSitemapLocs(sitemap.pathOnDisk);
-    targets = urls.slice(0, config.crawl.maxPages);
+    targets = urls.slice(0, maxPagesOverride);
   } else {
-    targets = urlsFromPaths(baseUrl, config.crawl.paths).slice(0, config.crawl.maxPages);
+    targets = urlsFromPaths(baseUrl, config.crawl.paths).slice(0, maxPagesOverride);
   }
 
   const a11yResults = [] as Array<{ url: string; issues: unknown[] }>;
@@ -102,7 +180,23 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
     }
   }
 
-  await fs.writeFile(path.join(reportsOutDir, 'pa11y.json'), JSON.stringify(a11yResults, null, 2), 'utf8');
+  // Pa11y output (summary by default)
+  const a11yMode = String(cliOptions.a11yOutput || 'summary');
+  let a11yOut: unknown = a11yResults;
+  if (a11yMode === 'summary' || !Boolean(cliOptions.a11yIncludeDetails)) {
+    const perPage = a11yResults.map((r) => {
+      const counts = { error: 0, warning: 0, notice: 0 } as Record<string, number>;
+      for (const issue of r.issues as any[]) {
+        const t = (issue.type || '').toLowerCase();
+        if (t in counts) counts[t]++;
+      }
+      const total = (r.issues?.length ?? 0);
+      return { url: r.url, total, byType: counts };
+    });
+    const totalIssues = perPage.reduce((acc, p) => acc + p.total, 0);
+    a11yOut = { pages: perPage.length, totalIssues, perPage };
+  }
+  await fs.writeFile(path.join(reportsOutDir, 'pa11y.json'), JSON.stringify(a11yOut, null, 2), 'utf8');
 
   const totalIssues = a11yResults.reduce((acc, r) => acc + (r.issues?.length ?? 0), 0);
   // eslint-disable-next-line no-console
@@ -115,8 +209,26 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
   }
 
   // Link check via Linkinator
-  const linkRes = await runLinkCheck(baseUrl, { recurse: true, timeout: 30000, concurrency: 100 });
-  await fs.writeFile(path.join(reportsOutDir, 'links.json'), JSON.stringify(linkRes, null, 2), 'utf8');
+  const linkTimeout = typeof cliOptions.linksTimeout === 'number' && !Number.isNaN(cliOptions.linksTimeout) ? cliOptions.linksTimeout as number : 30000;
+  const linkConcurrency = typeof cliOptions.linksConcurrency === 'number' && !Number.isNaN(cliOptions.linksConcurrency) ? cliOptions.linksConcurrency as number : 100;
+  const linkRes = await runLinkCheck(baseUrl, { recurse: true, timeout: linkTimeout, concurrency: linkConcurrency });
+
+  // Link output (summary by default, optionally internal only)
+  const linksMode = String(cliOptions.linksOutput || 'summary');
+  const internalOnly = Boolean(cliOptions.linksInternalOnly);
+  const baseOrigin = (() => { try { return new URL(baseUrl).origin; } catch { return null; } })();
+  const linksFiltered = internalOnly && baseOrigin
+    ? linkRes.links.filter((l) => { try { return new URL(l.url).origin === baseOrigin; } catch { return false; } })
+    : linkRes.links;
+  const brokenFiltered = linksFiltered.filter((l) => l.state === 'BROKEN');
+  let linksOut: unknown = linkRes;
+  if (linksMode === 'summary' || !Boolean(cliOptions.linksIncludeDetails)) {
+    linksOut = {
+      brokenCount: brokenFiltered.length,
+      broken: brokenFiltered.map((l) => ({ url: l.url, status: l.status, parent: l.parent })),
+    };
+  }
+  await fs.writeFile(path.join(reportsOutDir, 'links.json'), JSON.stringify(linksOut, null, 2), 'utf8');
   // eslint-disable-next-line no-console
   console.log(`\nLinks: scanned, broken=${linkRes.brokenCount}`);
   if (linkRes.brokenCount > config.thresholds.links.maxBroken) {
@@ -135,7 +247,12 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
       htmlResults.push({ url, errorCount: 1, messages: [{ type: 'error', message: (err as Error).message }] as any });
     }
   }
-  await fs.writeFile(path.join(reportsOutDir, 'html.json'), JSON.stringify(htmlResults, null, 2), 'utf8');
+  const htmlMode = String(cliOptions.htmlOutput || 'summary');
+  let htmlOut: unknown = htmlResults;
+  if (htmlMode === 'summary' || !Boolean(cliOptions.htmlIncludeDetails)) {
+    htmlOut = htmlResults.map((r) => ({ url: r.url, errorCount: r.errorCount }));
+  }
+  await fs.writeFile(path.join(reportsOutDir, 'html.json'), JSON.stringify(htmlOut, null, 2), 'utf8');
   const totalHtmlErrors = htmlResults.reduce((acc, r) => acc + (r.errorCount ?? 0), 0);
   // eslint-disable-next-line no-console
   console.log(`\nHTML: scanned ${htmlResults.length} page(s), total errors: ${totalHtmlErrors}`);
@@ -166,7 +283,7 @@ export async function runOrchestrator({ cliOptions, config }: OrchestratorInput)
   };
   await fs.writeFile(path.join(reportsOutDir, 'summary.json'), JSON.stringify(summary, null, 2), 'utf8');
 
-  if (anyFailures) {
+  if (anyFailures && !Boolean(cliOptions.softFail)) {
     // eslint-disable-next-line no-console
     console.error('\nOne or more thresholds failed.');
     process.exitCode = 1;

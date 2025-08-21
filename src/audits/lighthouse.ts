@@ -7,6 +7,7 @@ export interface LighthouseRunInput {
   url: string;
   categories?: LighthouseCategory[];
   includeScreenshots?: boolean;
+  skipHeavyAudits?: boolean;
 }
 
 export interface LighthouseRunOutput {
@@ -14,7 +15,7 @@ export interface LighthouseRunOutput {
   rawReport: string; // JSON string from LH
 }
 
-export async function runLighthouseAudit({ url, categories, includeScreenshots }: LighthouseRunInput): Promise<LighthouseRunOutput> {
+export async function runLighthouseAudit({ url, categories, includeScreenshots, skipHeavyAudits }: LighthouseRunInput): Promise<LighthouseRunOutput> {
   let chrome: LaunchedChrome | undefined;
   try {
     chrome = await launch({ chromeFlags: ['--headless', '--no-sandbox', '--disable-gpu'] });
@@ -25,14 +26,25 @@ export async function runLighthouseAudit({ url, categories, includeScreenshots }
       lhOptions.onlyCategories = categories;
     }
     // Skip heavy screenshot audits by default unless explicitly included
+    const skipList: string[] = [];
     if (!includeScreenshots) {
+      skipList.push('screenshot-thumbnails', 'final-screenshot', 'full-page-screenshot');
+    }
+    if (skipHeavyAudits) {
+      skipList.push(
+        'network-requests',
+        'tasks',
+        'diagnostics',
+        'resource-summary',
+        'script-treemap-data',
+        'third-party-summary',
+        'duplicate-javascript'
+      );
+    }
+    if (skipList.length > 0) {
       lhOptions.settings = {
         ...(lhOptions.settings || {}),
-        skipAudits: [
-          'screenshot-thumbnails',
-          'final-screenshot',
-          'full-page-screenshot',
-        ],
+        skipAudits: [...new Set([...(lhOptions.settings?.skipAudits || []), ...skipList])],
       };
     }
     const result = await lighthouse(url, lhOptions);
