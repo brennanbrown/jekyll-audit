@@ -25,7 +25,7 @@
     <meta name="twitter:image" content="https://brennanbrown.github.io/jekyll-audit/docs/favicon.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-5m1L7mQ6q7mVfQ/0k7V3nS5z3P0b6lV2+K+Zgfrs9n8wV28iPYnq9j1Q8KZkPqz3gZf4VdXkQv0n6uGlm0oP7g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -33,13 +33,14 @@
       html, body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
       .gradient-bg { background: radial-gradient(1200px 600px at 90% -10%, #60a5fa33, transparent), radial-gradient(800px 400px at -10% 10%, #34d39933, transparent), linear-gradient(180deg,#0f172a,#0b1222 30%, #0b1020); }
       .card { backdrop-filter: blur(8px); }
-      code { background: #0b1222; color: #d1d5db; padding: 0.15rem 0.35rem; border-radius: 0.25rem; }
+      /* Style inline code only; do not override block code colors */
+      :not(pre) > code { background: #0b1222; color: #d1d5db; padding: 0.15rem 0.35rem; border-radius: 0.25rem; }
       /* Ensure code blocks scroll horizontally on small screens instead of overflowing */
-      pre { background: #0b1222; color: #e5e7eb; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; overflow-y: hidden; max-width: 100%; box-sizing: border-box; }
-      pre code { white-space: pre; word-break: normal; }
+      pre { background: #0b1222; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; overflow-y: hidden; max-width: 100%; box-sizing: border-box; }
+      pre code { white-space: pre; word-break: normal; background: transparent; }
       @media (max-width: 640px) {
-        /* Prevent bleed entirely on small screens; use native horizontal scroll */
-        .pre-wrap { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+        /* Prevent bleed on small screens; keep inner padding for readability */
+        .pre-wrap { margin-left: 0; margin-right: 0; padding-left: 1rem; padding-right: 1rem; }
       }
       .prose a { text-decoration: underline; }
     </style>
@@ -270,7 +271,7 @@ jobs:
       </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-1m9mF0M8Fq8VJ9oI7k7r2jz0fG0nP6EoD+QhH3M1C0t4hkv7x8nZs0rQ2cO9IYwHkQ8nqg5Jx+2sY8y1nJ4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
       if (window.hljs) { window.hljs.highlightAll(); }
       document.getElementById('year').textContent = new Date().getFullYear();
