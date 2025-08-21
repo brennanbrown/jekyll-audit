@@ -38,6 +38,8 @@
       /* Ensure code blocks scroll horizontally on small screens instead of overflowing */
       pre { background: #0b1222; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; overflow-y: hidden; max-width: 100%; box-sizing: border-box; }
       pre code { white-space: pre; word-break: normal; background: transparent; }
+      /* Optional wrapping for specific blocks */
+      .wrap code { white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
       @media (max-width: 640px) {
         /* Prevent bleed on small screens; keep inner padding for readability */
         .pre-wrap { margin-left: 0; margin-right: 0; padding-left: 1rem; padding-right: 1rem; }
@@ -141,7 +143,7 @@
           <div>
             <h3 class="text-2xl font-bold">Quick start</h3>
             <p class="mt-3 text-slate-300">Requirements: Node ≥ 18, Ruby with Jekyll for builds.</p>
-            <pre class="mt-3 pre-wrap"><code class="language-bash"># install and run (no install)
+            <pre class="mt-3 pre-wrap wrap"><code class="language-bash"># install and run (no install)
 npx @brennanbrown/jekyll-audit audit
 
 # or install globally
@@ -154,7 +156,7 @@ jekyll-audit --baseUrl http://127.0.0.1:4000 audit</code></pre>
           <div class="prose prose-invert max-w-none">
             <h3 class="text-2xl font-bold">Config (optional)</h3>
             <p>Create <code>jekyll-audit.config.js</code> in your repo:</p>
-            <pre class="pre-wrap"><code class="language-js">/** @type {import('./dist/config/schema.js').AuditConfig} */
+            <pre class="pre-wrap wrap"><code class="language-js">/** @type {import('./dist/config/schema.js').AuditConfig} */
 export default {
   jekyll: { buildDir: '_site', buildCommand: 'bundle exec jekyll build' },
   crawl: { useSitemap: true, maxPages: 50, paths: ['/'] },
