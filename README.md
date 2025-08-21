@@ -57,6 +57,25 @@ export default {
 - JSON files written to `reports/` by default
 - `summary.json` contains consolidated results and `passed` boolean
 
+## CLI Flags
+Common examples (full list and details in `docs/flags.html`):
+
+```bash
+# Default lean run (summary outputs)
+npx @brennanbrown/jekyll-audit audit
+
+# Full Lighthouse with details and screenshots (heavier)
+npx @brennanbrown/jekyll-audit audit --output full --includeDetails --includeScreenshots
+
+# Faster link checks (internal only, tuned)
+npx @brennanbrown/jekyll-audit audit --linksInternalOnly --linksConcurrency 200 --linksTimeout 15000
+
+# Limit pages + disable sitemap
+npx @brennanbrown/jekyll-audit audit --maxPages 20 --noSitemap
+```
+
+See full flag reference: https://brennanbrown.github.io/jekyll-audit/docs/flags.html
+
 ## CI usage (GitHub Actions)
 Example workflow `.github/workflows/jekyll-audit.yml`:
 
@@ -94,6 +113,13 @@ jobs:
           name: jekyll-audit-reports
           path: reports/
 ```
+
+## Docs
+- Landing page: https://brennanbrown.github.io/jekyll-audit/
+- Flags reference: https://brennanbrown.github.io/jekyll-audit/docs/flags.html
+
+## Changelog
+- See CHANGELOG.md for version history and details.
 
 ## Notes
 - You can bypass build/serve using `--baseUrl` to point at a dev server.
