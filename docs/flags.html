@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>jekyll-audit · CLI Flags Reference</title>
+    <meta name="description" content="CLI flags reference for jekyll-audit. Learn all options for Lighthouse, Pa11y, Linkinator, HTML validation, crawl controls, and CI behavior." />
+    <link rel="icon" type="image/svg+xml" href="/docs/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
+    <meta name="theme-color" content="#0b1222" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+      html, body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+      .gradient-bg { background: radial-gradient(1200px 600px at 90% -10%, #60a5fa33, transparent), radial-gradient(800px 400px at -10% 10%, #34d39933, transparent), linear-gradient(180deg,#0f172a,#0b1222 30%, #0b1020); }
+      .card { backdrop-filter: blur(8px); }
+      :not(pre) > code { background: #0b1222; color: #d1d5db; padding: 0.15rem 0.35rem; border-radius: 0.25rem; }
+      pre { background: #0b1222; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; overflow-y: hidden; max-width: 100%; box-sizing: border-box; }
+      pre code { white-space: pre; word-break: normal; background: transparent; }
+      .prose a { text-decoration: underline; }
+    </style>
+  </head>
+  <body class="gradient-bg min-h-screen text-slate-100">
+    <header class="relative">
+      <div class="mx-auto max-w-6xl px-6 py-8 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <a class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-400/20 text-sky-300 text-xl" href="./index.html" aria-label="Home">🛠️</a>
+          <div>
+            <h1 class="text-2xl font-extrabold tracking-tight">jekyll-audit</h1>
+            <p class="text-sm text-slate-300">CLI Flags Reference</p>
+          </div>
+        </div>
+        <nav class="hidden md:flex items-center gap-4 text-slate-200">
+          <a class="hover:text-white" href="./index.html#features">Features</a>
+          <a class="hover:text-white" href="./index.html#usage">Usage</a>
+          <a class="hover:text-white" href="./index.html#config">Config</a>
+          <a class="hover:text-white" href="./index.html#ci">CI</a>
+          <a class="hover:text-white" href="./flags.html">Flags</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-6 py-10">
+      <h2 class="text-3xl font-extrabold">CLI Flags</h2>
+      <p class="mt-3 text-slate-300">All flags can be combined. Defaults target fast, lean CI runs with small JSON outputs.</p>
+
+      <section class="mt-8 grid md:grid-cols-2 gap-6">
+        <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+          <h3 class="font-semibold text-lg">General</h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-300">
+            <li><code>--config &lt;path&gt;</code> – Path to config file.</li>
+            <li><code>--baseUrl &lt;url&gt;</code> – Target a running site instead of serving locally.</li>
+            <li><code>--report &lt;formats&gt;</code> – CSV of <code>json,html,md</code>. Default <code>json</code>.</li>
+            <li><code>--outDir &lt;dir&gt;</code> – Reports output directory. Default <code>reports</code>.</li>
+            <li><code>--skipBuild</code>, <code>--skipServe</code> – Skip steps if you already have a site running.</li>
+          </ul>
+        </div>
+        <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+          <h3 class="font-semibold text-lg">Crawl Controls</h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-300">
+            <li><code>--maxPages &lt;n&gt;</code> – Limit pages scanned (overrides config).</li>
+            <li><code>--paths &lt;csv&gt;</code> – Comma-separated path list to scan. Disables sitemap.</li>
+            <li><code>--noSitemap</code> – Do not use <code>sitemap.xml</code> even if present.</li>
+          </ul>
+        </div>
+        <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+          <h3 class="font-semibold text-lg">Lighthouse</h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-300">
+            <li><code>--output summary|full</code> – JSON mode. Default <code>summary</code>.</li>
+            <li><code>--includeDetails</code> – Include audit details (heavier). Typically for <code>full</code>.</li>
+            <li><code>--includeScreenshots</code> – Include Base64 screenshot audits (large!).</li>
+            <li><code>--gzip</code> – Write <code>lighthouse.json.gz</code> when in full mode.</li>
+            <li><code>--softFail</code> – Do not exit non‑zero on threshold warnings.</li>
+          </ul>
+          <p class="mt-3 text-xs text-slate-400">Summary mode skips heavy audits and strips blobs for small, diff‑friendly reports.</p>
+        </div>
+        <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+          <h3 class="font-semibold text-lg">Accessibility (Pa11y)</h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-300">
+            <li><code>--a11yOutput summary|full</code> – Default <code>summary</code>.</li>
+            <li><code>--a11yIncludeDetails</code> – Include raw issue list.</li>
+          </ul>
+          <p class="mt-3 text-xs text-slate-400">Summary includes per‑page totals and counts by issue type (error/warning/notice).</p>
+        </div>
+        <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+          <h3 class="font-semibold text-lg">Links (Linkinator)</h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-300">
+            <li><code>--linksOutput summary|full</code> – Default <code>summary</code>.</li>
+            <li><code>--linksInternalOnly</code> – Only report links within the base origin.</li>
+            <li><code>--linksIncludeDetails</code> – Include all link records (heavier).</li>
+            <li><code>--linksTimeout &lt;ms&gt;</code> – Per‑request timeout (default 30000).</li>
+            <li><code>--linksConcurrency &lt;n&gt;</code> – Concurrency (default 100).</li>
+          </ul>
+          <p class="mt-3 text-xs text-slate-400">Summary lists only broken links with minimal fields for fast triage.</p>
+        </div>
+        <div class="card rounded-2xl bg-white/5 border border-white/10 p-6">
+          <h3 class="font-semibold text-lg">HTML Validation</h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-300">
+            <li><code>--htmlOutput summary|full</code> – Default <code>summary</code>.</li>
+            <li><code>--htmlIncludeDetails</code> – Include full validator messages.</li>
+          </ul>
+          <p class="mt-3 text-xs text-slate-400">Summary returns only per‑URL error counts.</p>
+        </div>
+      </section>
+
+      <section class="mt-10">
+        <h3 class="text-2xl font-bold">Examples</h3>
+        <pre class="mt-3"><code class="language-bash"># Default, lean CI run
+npx @brennanbrown/jekyll-audit audit
+
+# Full Lighthouse with details and screenshots (heavy)
+npx @brennanbrown/jekyll-audit audit --output full --includeDetails --includeScreenshots
+
+# Internal links only, tuned for speed
+npx @brennanbrown/jekyll-audit audit --linksInternalOnly --linksConcurrency 200 --linksTimeout 15000
+
+# Limit pages and disable sitemap
+npx @brennanbrown/jekyll-audit audit --maxPages 20 --noSitemap
+</code></pre>
+      </section>
+    </main>
+
+    <footer class="border-t border-white/10">
+      <div class="mx-auto max-w-6xl px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-slate-400">© <span id="year"></span> Brennan Brown. All rights reserved.</p>
+        <div class="text-slate-400 text-sm">Built with <span class="text-pink-300">♥</span> · <a class="underline" href="https://github.com/brennanbrown/jekyll-audit" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      if (window.hljs) { window.hljs.highlightAll(); }
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
