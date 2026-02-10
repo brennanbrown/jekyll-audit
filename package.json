@@ -2,7 +2,7 @@
   "name": "@brennanbrown/jekyll-audit",
   "version": "0.3.1",
   "description": "CLI to audit Jekyll sites for performance, accessibility, SEO, links, and HTML validation.",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "type": "module",
   "author": "Brennan Brown",
   "repository": {
